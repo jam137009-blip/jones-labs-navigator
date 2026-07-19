@@ -2,13 +2,50 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#173d49" />
+
     <title>Jones Labs Navigator</title>
     <meta name="description" content="A guided clarity experience. Share what you want to accomplish and Navigator will identify the question and next move most likely to create progress." />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Jones Labs Navigator" />
+    <meta property="og:description" content="You don't need to know the right question yet. Navigator identifies the question beneath your question and recommends the one next move most likely to create progress." />
+    <meta property="og:image" content="/og-image.png" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Jones Labs Navigator" />
+    <meta name="twitter:description" content="You don't need to know the right question yet. Navigator identifies the question beneath your question and recommends the one next move most likely to create progress." />
+
+    <!-- Apple -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Navigator" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <noscript>
+      <style>
+        .noscript-shell { min-height: 100vh; background: #fbfaf6; color: #17232d; font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 24px; }
+        .noscript-mark { width: 56px; height: 56px; background: #173d49; color: white; border-radius: 50% 50% 50% 14%; display: inline-grid; place-items: center; font-family: Georgia, serif; font-style: italic; font-size: 1.6rem; margin-bottom: 28px; }
+        .noscript-shell h1 { font-family: Georgia, serif; font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 400; color: #102f39; margin: 0 0 16px; line-height: 1.1; }
+        .noscript-shell p { color: #66737c; line-height: 1.7; max-width: 480px; margin: 0 auto 24px; }
+        .noscript-shell a { color: #173d49; font-weight: 600; }
+      </style>
+      <div class="noscript-shell">
+        <div class="noscript-mark">N</div>
+        <h1>JavaScript is required.</h1>
+        <p>Jones Labs Navigator is an interactive experience that requires JavaScript to run. Please enable JavaScript in your browser settings and reload the page.</p>
+        <p><a href="https://www.enable-javascript.com/" rel="noopener noreferrer">How to enable JavaScript →</a></p>
+      </div>
+    </noscript>
   </body>
 </html>
