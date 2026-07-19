@@ -131,7 +131,7 @@ async function callOpenAI(apiKey: string, stage: "interpret" | "result", input: 
   const schema = stage === "interpret" ? interpretationSchema : resultSchema;
   for (let attempt = 0; attempt < 2; attempt += 1) {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 55000);
+    const timeout = setTimeout(() => controller.abort(), 90000);
     try {
       const response = await fetch(OPENAI_API_ENDPOINT, {
         method: "POST", signal: controller.signal,
