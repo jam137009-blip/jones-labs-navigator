@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "Jones Labs Navigator"
+version = "1.0.0"
+id = "artifacts/navigator"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22968
+
+[services.development]
+run = "pnpm --filter @workspace/navigator run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/navigator", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/navigator/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22968"
+BASE_PATH = "/"
