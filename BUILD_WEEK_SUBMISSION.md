@@ -31,14 +31,12 @@ A full-stack AI SPA with eight screens and a structured two-stage AI pipeline:
 
 ### Stage 1: Interpret
 - User describes their intention in plain language
-- GPT-4o returns 3–5 distinct hypothesis directions via JSON schema structured output
-- AI infers expertise level (exploratory / informed / expert) and adapts its analysis
-- AI identifies the greatest remaining uncertainty
+- **GPT-5.6-sol** (via Responses API) interprets the real intent, separates explicit facts from assumptions, generates 3–5 competing hypothesis directions as structured JSON, infers expertise level (exploratory / informed / expert), and identifies the greatest remaining uncertainty
 
 ### Stage 2: Result
 - User selects which hypotheses match their meaning (or corrects Navigator's interpretation)
 - Optional: AI asks at most one precision clarification question
-- GPT-4o returns a full Navigator Insight:
+- **GPT-5.6-sol** (via Responses API) compares decision paths and consequences, challenges its own leading interpretation, and returns a full Navigator Insight:
   - **The Question Beneath the Question** — the single precision question most likely to unlock movement
   - Current reality vs. desired reality
   - Primary constraint
@@ -59,7 +57,8 @@ A full-stack AI SPA with eight screens and a structured two-stage AI pipeline:
 |-------|-----------|
 | Frontend | React 19, Vite 7, TypeScript, custom CSS |
 | Backend | Express (TypeScript), pnpm monorepo |
-| AI | OpenAI `gpt-4o` via Chat Completions, `response_format: json_schema` |
+| AI — runtime | OpenAI `gpt-5.6-sol` via Responses API (`POST /v1/responses`), `text.format.type: json_schema`, `strict: true` |
+| AI — build tooling | OpenAI Codex (Replit Agent) — used to port the Next.js prototype, implement the Express API server, author structured JSON validators, and debug the production build pipeline |
 | State | `localStorage` (no server-side session) |
 | Hosting | Replit (development + deployment) |
 
@@ -99,7 +98,7 @@ Type: *"I want to figure out whether to launch a new product line or double down
 > "Navigator doesn't need perfectly formed input. It interprets what you mean, not just what you say."
 
 Click **Find the direction**. While loading:
-> "Navigator is calling GPT-4o with a structured JSON schema. The response always matches the expected type — if it doesn't, the user sees a clean error and can retry."
+> "Navigator is calling GPT-5.6 via the Responses API with a strict JSON schema. The response always matches the expected type — if it doesn't, the user sees a clean error and can retry."
 
 **[1:15–1:45] Patterns**
 Three hypotheses appear. Select one or two. Show the expertise mode selector:

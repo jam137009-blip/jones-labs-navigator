@@ -47,9 +47,9 @@ jones-labs-navigator/
 
 **Frontend** → `artifacts/navigator` — pure React SPA, no router. State machine controls which screen is visible. All AI calls are plain `fetch("/api/navigate")`.
 
-**Backend** → `artifacts/api-server` — Express server. `POST /api/navigate` validates input, rate-limits (12 req / 10 min per IP), calls OpenAI Chat Completions with structured JSON schema output, and returns the parsed result.
+**Backend** → `artifacts/api-server` — Express server. `POST /api/navigate` validates input, rate-limits (12 req / 10 min per IP), calls the OpenAI Responses API with structured JSON schema output, and returns the parsed result.
 
-**AI model**: `gpt-4o` via Chat Completions API with `response_format: { type: "json_schema" }` for guaranteed structured output.
+**AI model**: `gpt-5.6-sol` via the OpenAI Responses API (`POST https://api.openai.com/v1/responses`) with `text.format.type: "json_schema"` and `strict: true` for guaranteed structured output.
 
 ---
 
@@ -59,7 +59,7 @@ jones-labs-navigator/
 
 - Node.js 20+
 - pnpm 9+
-- An OpenAI API key (model access: `gpt-4o`)
+- An OpenAI API key with access to `gpt-5.6-sol` (Responses API)
 
 ### 1. Install dependencies
 
@@ -111,7 +111,7 @@ pnpm --filter @workspace/api-server run build
    - *"I want to decide whether to leave my current role and build something of my own"*
    - *"I'm trying to figure out why my team isn't shipping fast enough"*
    - *"I want to understand whether this product idea is worth pursuing"*
-4. Click **Find the direction** — Navigator calls the OpenAI API (~5–10 seconds)
+4. Click **Find the direction** — Navigator calls the OpenAI Responses API with `gpt-5.6-sol` (~5–10 seconds)
 5. On the Patterns screen, select which hypothesis fits best (or "None of these")
 6. Click **Continue** — Navigator calls OpenAI again for the full insight
 7. Read the Navigator Insight — especially **The Question Beneath the Question** and **Your Next Move**
@@ -126,7 +126,7 @@ If the API is unavailable, the Analysis screen shows an error with a **"Use samp
 | Time | Action |
 |------|--------|
 | 0:00–0:30 | Open app, read the welcome screen aloud: *"You don't need to know the right question yet."* Explain the problem: people get stuck not because they lack answers but because they don't know which question to ask. |
-| 0:30–1:15 | Type the intention: *"I want to figure out whether to launch a new product line or double down on our existing one."* Click Find the direction. While it loads, explain that Navigator is calling GPT-4o with a structured schema — it always returns a valid interpretation. |
+| 0:30–1:15 | Type the intention: *"I want to figure out whether to launch a new product line or double down on our existing one."* Click Find the direction. While it loads, explain that Navigator is calling GPT-5.6 (via the Responses API) with a strict JSON schema — it always returns a valid interpretation. |
 | 1:15–1:45 | Select one or two hypotheses. Adjust the expertise mode to "Expert." Click Continue. |
 | 1:45–2:30 | Read **The Question Beneath the Question** and **Your Next Move** aloud. Show the Assumptions and Decision Paths sections briefly. |
 | 2:30–3:00 | Click **Choose my next move** → commit → show the final commitment screen. Explain that the draft is saved to `localStorage` — no account, no server-side session. |

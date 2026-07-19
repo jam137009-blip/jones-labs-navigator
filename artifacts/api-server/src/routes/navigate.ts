@@ -121,25 +121,29 @@ function outputText(payload: Record<string, unknown>): string | null {
   return null;
 }
 
+// Primary model: gpt-5.6-sol via Responses API (OpenAI Build Week requirement).
+// gpt-4o via Chat Completions is available as a manual fallback if needed — swap
+// the constants below and revert the request body to messages[]/response_format.
+const NAVIGATOR_MODEL = "gpt-5.6-sol";
+const OPENAI_API_ENDPOINT = "https://api.openai.com/v1/responses";
+
 async function callOpenAI(apiKey: string, stage: "interpret" | "result", input: Record<string, unknown>, requestId: string): Promise<unknown> {
   const schema = stage === "interpret" ? interpretationSchema : resultSchema;
   for (let attempt = 0; attempt < 2; attempt += 1) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 55000);
     try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      const response = await fetch(OPENAI_API_ENDPOINT, {
         method: "POST", signal: controller.signal,
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}`, "X-Request-Id": requestId },
         body: JSON.stringify({
-          model: "gpt-4o",
-          max_tokens: stage === "interpret" ? 2000 : 3500,
-          messages: [
-            { role: "system", content: COUNCIL_INSTRUCTIONS },
-            { role: "user", content: JSON.stringify({ stage, userData: input }) },
-          ],
-          response_format: {
-            type: "json_schema",
-            json_schema: {
+          model: NAVIGATOR_MODEL,
+          instructions: COUNCIL_INSTRUCTIONS,
+          input: [{ role: "user", content: JSON.stringify({ stage, userData: input }) }],
+          max_output_tokens: stage === "interpret" ? 2000 : 3500,
+          text: {
+            format: {
+              type: "json_schema",
               name: stage === "interpret" ? "navigator_interpretation" : "navigator_result",
               strict: true,
               schema,
@@ -154,8 +158,7 @@ async function callOpenAI(apiKey: string, stage: "interpret" | "result", input: 
         if (attempt === 0 && (response.status === 429 || response.status >= 500)) continue;
         throw new Error(`OpenAI status ${response.status}: ${errBody}`);
       }
-      const choices = payload.choices as Array<{ message?: { content?: string; refusal?: string } }> | undefined;
-      const content = choices?.[0]?.message?.content;
+      const content = outputText(payload);
       if (!content) {
         console.error(`OpenAI missing content: ${JSON.stringify(payload).slice(0, 500)}`);
         throw new Error("Missing content in OpenAI response");

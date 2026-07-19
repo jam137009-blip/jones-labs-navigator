@@ -1,0 +1,31 @@
+Important correction: do not publish yet.
+
+The official OpenAI Build Week rules require Jones Labs Navigator to meaningfully use both Codex and GPT-5.6. The current runtime configuration using only gpt-4o is not sufficient for the competition.
+
+Make the following corrections:
+
+1. Replace the primary Navigator runtime model with an available GPT-5.6 model supported by my OpenAI account and the official Build Week resources.
+2. Do not guess the exact model identifier. Check the models available to the configured OpenAI account and use the correct GPT-5.6 identifier.
+3. Prefer the official OpenAI Responses API if that is the supported interface for the selected GPT-5.6 model.
+4. Preserve the current structured schema validation, retry protection, rate limiting, error handling, and deterministic sample-demo fallback.
+5. GPT-5.6 must perform meaningful core work:
+
+   * interpret the user’s real intent,
+   * separate facts, assumptions, inferences, and unknowns,
+   * generate competing explanations,
+   * compare decision paths and consequences,
+   * recommend the best-supported next action,
+   * and generate the clarity summary.
+6. Update README.md and BUILD_WEEK_SUBMISSION.md so they accurately identify:
+
+   * the exact GPT-5.6 model,
+   * the exact API endpoint,
+   * which product functions GPT-5.6 performs,
+   * and how Codex was used to build and extend the project.
+7. Keep gpt-4o only as an optional secondary fallback if needed. Do not describe it as satisfying the Build Week GPT-5.6 requirement.
+8. Run one successful live GPT-5.6 end-to-end Navigator session after the API account has credits.
+9. Confirm the response passes the existing interpretation and result validators.
+10. Provide the exact files and line numbers showing the GPT-5.6 integration.
+11. Do not claim Build Week compliance until GPT-5.6 is visibly and meaningfully integrated.
+
+Do not redesign the application or add new features. Make only the technical changes required for GPT-5.6 compliance and verify the complete workflow.
